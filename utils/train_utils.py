@@ -197,7 +197,6 @@ def train_loop(epoch, model, loader, optimizer, n_classes, bag_weight, writer, l
         elif modelType == 'LRENet_adv':
             loss2_value = loss2.item()
             loss3_value = loss3.item()
-            loss4_value = loss4.item()
             total_loss = total_loss + moe_aux_loss + weight1*loss2 + weight2*loss3
 
         train_loss += loss_value
