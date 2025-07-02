@@ -384,8 +384,7 @@ def validate_test(cur, epoch, model, loader, n_classes, early_stopping=None, wri
                 logits, Y_prob, Y_hat, moe_aux_loss, intersection_I, intersection_S, c_I, c_S = model(share_feature,
                                                                                                       share_feature)
             elif modelType == 'LRENet_adv':
-                logits, Y_prob, Y_hat, moe_aux_loss, kqv, kqv_c, kqv_c_pre= model(
-                    share_feature)
+                logits, Y_prob, Y_hat, moe_aux_loss, kqv, kqv_c= model(share_feature)
                 # if torch.any(torch.isnan(Y_prob)):
                 #     cc=0
             else:
