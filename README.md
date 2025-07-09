@@ -13,7 +13,7 @@ Input: svs格式的WSI数据, step2得到的patches和process_list_autogen.csv
 python /data1/fengyy/Code/LRENet_debug/dataProcess/extract_features_fp.py --data_h5_dir DIR_TO_COORDS --data_slide_dir DATA_DIRECTORY --csv_path CSV_FILE_NAME --feat_dir FEATURES_DIRECTORY --batch_size 512 --slide_ext .svs
 ```
 
-# Step 3. 生成交叉验证所需的列表 [Please refer to https://github.com/mahmoodlab/CLAM]
+# Step 3. 生成交叉验证所需的列表
 Input: 制作csv表, 包含case_id, slide_id, label。
 ```shell
 python create_N_fold_splits_seq.py --task task_gbmlgg --seed 1 --k 5
