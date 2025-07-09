@@ -1,4 +1,5 @@
 # Pytorch implementation of 'PLM-SynNet: Pathology Large Model Synergy Network for Multi-instance Learning on Whole Slide Imaging'
+![f2](https://github.com/user-attachments/assets/22374b4f-1f8a-410f-bf42-cf721adf8f50)
 
  # Step 1. WSI图像的分割和切块 [Please refer to https://github.com/mahmoodlab/CLAM]
 Input: svs格式的WSI数据。
