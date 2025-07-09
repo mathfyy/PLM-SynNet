@@ -1,4 +1,4 @@
-# Pytorch implementation of 'Latent Representation Enhancement Network for Few-Shot Multi-Instance Learning in Whole Slide Image Classification'
+# Pytorch implementation of 'PLM-SynNet: Pathology Large Model Synergy Network for Multi-instance Learning on Whole Slide Imaging'
 
 export PYTHONPATH='/data1/fengyy/Code/LRENet_debug/'
 
