@@ -3,7 +3,8 @@
 
 
 
- # Step 1. WSI图像的分割和切块 [Please refer to https://github.com/mahmoodlab/CLAM]
+ # Step 1. WSI图像的分割和切块 
+ [Please refer to https://github.com/mahmoodlab/CLAM]
 Input: svs格式的WSI数据。
 ```shell
 python create_patches_fp.py --source DATA_DIRECTORY --save_dir RESULTS_DIRECTORY --patch_size 256 --seg --patch --stitch 
