@@ -13,7 +13,8 @@ from sklearn.metrics import roc_auc_score, roc_curve, auc
 import h5py
 import math
 from sklearn.preprocessing import label_binarize
-from sklearn.metrics import precision_score, recall_score, f1_score, log_loss, matthews_corrcoef, cohen_kappa_score
+# from sklearn.metrics import precision_score, recall_score, f1_score, log_loss, matthews_corrcoef, cohen_kappa_score
+from sklearn.metrics import precision_score, recall_score, f1_score, matthews_corrcoef, cohen_kappa_score, accuracy_score, roc_auc_score
 
 from models.model_AttnMIL import AttnMIL_Attention, AttnMIL_GatedAttention
 from models.model_DeepAttnMISL import DeepAttnMIL
@@ -22,7 +23,7 @@ from models.model_TransMIL import TransMIL
 from models.model_DTFDMIL import DTFDMIL
 from models.model_Surformer import MIL_Attention_FC_Surformer
 from models.model_G_HANet import G_HANet
-from models.model import LRENet, LRENet_adv
+from models.model import *
 
 
 def initiate_model(args, ckpt_path=None):
@@ -143,16 +144,28 @@ def summary(model, loader, args):
     del data
     ev_test_error /= len(loader)
 
-    # ev_test_error,ev_auc_score,ev_precision,ev_recall,ev_f1,ev_mcc,ev_kappa
-    ev_precision = precision_score(all_labels, all_preds)
-    ev_recall = recall_score(all_labels, all_preds)
-    ev_f1 = f1_score(all_labels, all_preds)
-    ev_mcc = matthews_corrcoef(all_labels, all_preds)
-    ev_kappa = cohen_kappa_score(all_labels, all_preds)
+    ev_precision = 0.0
+    ev_recall = 0.0
+    ev_f1 = 0.0
+    ev_mcc = 0.0
+    ev_kappa = 0.0
+    if args.n_classes == 2:
+        # ev_test_error,ev_auc_score,ev_precision,ev_recall,ev_f1,ev_mcc,ev_kappa
+        ev_precision = precision_score(all_labels, all_preds)
+        ev_recall = recall_score(all_labels, all_preds)
+        ev_f1 = f1_score(all_labels, all_preds)
+        ev_mcc = matthews_corrcoef(all_labels, all_preds)
+        ev_kappa = cohen_kappa_score(all_labels, all_preds)
+    else:
+        ev_precision = precision_score(all_labels, all_preds, average='macro')  # 宏平均精度
+        ev_recall = recall_score(all_labels, all_preds, average='macro')  # 宏平均召回率
+        ev_f1 = f1_score(all_labels, all_preds, average='macro')  # 宏平均F1分数
+        ev_mcc = matthews_corrcoef(all_labels, all_preds)  # 马修斯相关系数
+        ev_kappa = cohen_kappa_score(all_labels, all_preds)
 
-    if args.n_classes > 2:
-        acc1, acc3 = accuracy(torch.from_numpy(all_probs), torch.from_numpy(all_labels), topk=(1, 3))
-        print('top1 acc: {:.3f}, top3 acc: {:.3f}'.format(acc1.item(), acc3.item()))
+        # if args.n_classes > 2:
+    #     acc1, acc3 = accuracy(torch.from_numpy(all_probs), torch.from_numpy(all_labels), topk=(1, 3))
+    #     print('top1 acc: {:.3f}, top3 acc: {:.3f}'.format(acc1.item(), acc3.item()))
 
     if len(np.unique(all_labels)) == 1:
         ev_auc_score = -1
