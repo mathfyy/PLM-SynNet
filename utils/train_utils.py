@@ -162,7 +162,7 @@ def train_loop(epoch, model, loader, optimizer, n_classes, bag_weight, writer, l
 
             listLoss_q = torch.zeros(feature1.shape[0]).to(label.device)
             listLoss_g = torch.zeros(feature1.shape[0]).to(label.device)
-            listLoss_qg = torch.zeros(feature1.shape[0]).to(label.device)
+            listLoss_qg = torch.zeros(feature1.shape[0]+1).to(label.device)
             for iPLM in range(feature1.shape[0]):
                 logits_q, _, _ = model.OutputLayer(model.GatedSFAttentionBlock(feature1[iPLM, :, :]))
                 listLoss_q[iPLM] = bag_weight * loss_fn(logits_q, label) + (1 - bag_weight) * loss_fn_inst(logits_q, label)
@@ -175,7 +175,9 @@ def train_loop(epoch, model, loader, optimizer, n_classes, bag_weight, writer, l
             if use_advLoss1:
                 loss2 = loss2/feature1.shape[0]
             if use_advLoss2:
-                loss3 = torch.max(torch.max(listLoss_qg)-torch.min(listLoss_q).detach(), torch.zeros(1).to(label.device))
+                listLoss_qg[iPLM+1] = loss0 + loss1
+                loss3 = torch.max(torch.max(listLoss_qg) - torch.min(listLoss_q).detach(),
+                                  torch.zeros(1).to(label.device))
 
         elif modelType == 'Surformer':
             loss1 = loss_fn_inst(logits_lo, label)
